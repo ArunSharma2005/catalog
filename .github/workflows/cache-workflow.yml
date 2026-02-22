@@ -1,0 +1,42 @@
+name: Cache Workflow
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache
+            node_modules
+          key: cache-780f5f0-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            cache-780f5f0-${{ runner.os }}-
+            cache-780f5f0-
+      
+      - name: prime-cache-780f5f0
+        run: |
+          if [ "${{ steps.cache-step.outputs.cache-hit }}" == "true" ]; then
+            echo "Cache hit! Cache was restored successfully."
+          else
+            echo "Cache miss! Building cache for the first time."
+          fi
+      
+      - name: Install dependencies (simulate)
+        run: |
+          mkdir -p node_modules
+          echo "Dependencies installed" > node_modules/test.txt
+      
+      - name: Display cache status
+        run: echo "Cache key used cache-780f5f0"
