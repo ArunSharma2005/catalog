@@ -132,7 +132,7 @@
     },
     "sports": {
       "count": 4,
-      "inventoryValue": 78417.1
+      "inventoryValue": 83186.16
     },
     "books": {
       "count": 3,
@@ -148,4 +148,5 @@
     }
   }
 }
+
 
